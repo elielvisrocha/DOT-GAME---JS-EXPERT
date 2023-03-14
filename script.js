@@ -13,15 +13,14 @@ const btnNew = document.querySelector('.btn--new');
 const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
 
+const resetGame = document.querySelector('.btn--new');
+
 // STARTING CONDITIONS
 score0EL.textContent = 0;
 score1EL.textContent = 0;
 diceEL.classList.add('hidden');
 
-const scores = [0, 0];
-let currentScore = 0;
-let activePlayer = 0;
-let playing = true;
+let scores, currentScore, activePlayer, playing;
 
 
 const switchPlayer = function () {
@@ -60,24 +59,47 @@ btnRoll.addEventListener('click', function () {
 btnHold.addEventListener('click', function () {
     if (playing) {
         // 1. ADD CURRENT SCORE TO ACTIVE PLAYERS'S SCORE
-    scores[activePlayer] += currentScore;
-    // scores[1] = scores[1] + currentScore
-    document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer];
+        scores[activePlayer] += currentScore;
+        // scores[1] = scores[1] + currentScore
+        document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer];
 
-    // 2. CHECK IF PLAYER'S SCORE IS >= 100
-    // FINISH THE GAME
-    if (scores[activePlayer] >= 10) {
-        playing = false;
-        diceEL.classList.add('hidden');
-        document.querySelector(
-            `.player--${activePlayer}`).classList.add('player-winner');
-        document.querySelector(
-            `.player--${activePlayer}`).classList.remove('player--active');
-    } else {
-        // 3. SWITCH TO THE NEXT PLAYER
-        switchPlayer();
+        // 2. CHECK IF PLAYER'S SCORE IS >= 100
+        // FINISH THE GAME
+        if (scores[activePlayer] >= 10) {
+            playing = false;
+            diceEL.classList.add('hidden');
+            document.querySelector(
+                `.player--${activePlayer}`).classList.add('player-winner');
+            document.querySelector(
+                `.player--${activePlayer}`).classList.remove('player--active');
+        } else {
+            // 3. SWITCH TO THE NEXT PLAYER
+            switchPlayer();
+        }
     }
-  }
 })
 
+function resetAllScores() {
+    scores = [0, 0];
+    currentScore = 0;
+    activePlayer = 0;
+    playing = true;
+
+    score0EL.textContent = 0;
+    score1EL.textContent = 0;
+    current0EL.textContent = 0;
+    current1EL.textContent = 0;
+
+    diceEL.classList.add('hidden');
+    player0EL.classList.remove('player--winner');
+    player1EL.classList.remove('player--winner');
+    player0EL.classList.add('player--active');
+    player1EL.classList.remove('player--active');
+}
+
+resetAllScores();
+
+
+
+resetGame.addEventListener('click', resetAllScores);
 
